@@ -1,0 +1,20 @@
+services:
+
+  db:
+    image: postgres:17
+    container_name: simulador_viagens_db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: simulador_viagens
+      POSTGRES_USER: simulador
+      POSTGRES_PASSWORD: simulador_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
