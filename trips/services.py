@@ -89,3 +89,57 @@ class RoutingService:
             "geometry": route.get("geometry"),
             "legs": route.get("legs", []),
         }
+
+
+class TripCalculator:
+
+    @staticmethod
+    def calculate(
+        distance_km: float,
+        consumption_km_per_liter: float,
+        fuel_price: float,
+        average_speed_kmh: float,
+        toll_cost: float = 0,
+        round_trip: bool = False,
+    ) -> dict:
+
+        multiplier = 2 if round_trip else 1
+
+        total_distance = distance_km * multiplier
+
+        fuel_liters = total_distance / consumption_km_per_liter
+
+        fuel_cost = fuel_liters * fuel_price
+
+        duration_hours = total_distance / average_speed_kmh
+
+        duration_minutes = duration_hours * 60
+
+        total_cost = fuel_cost + (toll_cost * multiplier)
+
+        return {
+            "distance_km": round(
+                total_distance,
+                2,
+            ),
+            "fuel_liters": round(
+                fuel_liters,
+                2,
+            ),
+            "fuel_cost": round(
+                fuel_cost,
+                2,
+            ),
+            "duration_minutes": round(
+                duration_minutes,
+                2,
+            ),
+            "toll_cost": round(
+                toll_cost * multiplier,
+                2,
+            ),
+            "total_cost": round(
+                total_cost,
+                2,
+            ),
+        }
