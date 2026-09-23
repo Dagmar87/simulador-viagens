@@ -21,6 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
+NOMINATIM_URL = os.getenv(
+    "NOMINATIM_URL",
+    "https://nominatim.openstreetmap.org/search",
+)
+
+OSRM_URL = os.getenv(
+    "OSRM_URL",
+    "https://router.project-osrm.org",
+)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
