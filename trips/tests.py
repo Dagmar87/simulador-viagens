@@ -47,3 +47,38 @@ class TripCalculatorTest(TestCase):
             result["total_cost"],
             Decimal("350.00"),
         )
+
+    def test_round_trip(self):
+        result = TripCalculator.calculate(
+            distance_km=500,
+            consumption_km_per_liter=10,
+            fuel_price=5,
+            average_speed_kmh=100,
+            toll_cost=20,
+            round_trip=True,
+        )
+
+        self.assertEqual(
+            result["distance_km"],
+            Decimal("1000.00"),
+        )
+
+        self.assertEqual(
+            result["fuel_liters"],
+            Decimal("100.00"),
+        )
+
+        self.assertEqual(
+            result["fuel_cost"],
+            Decimal("500.00"),
+        )
+
+        self.assertEqual(
+            result["toll_cost"],
+            Decimal("40.00"),
+        )
+
+        self.assertEqual(
+            result["total_cost"],
+            Decimal("540.00"),
+        )
