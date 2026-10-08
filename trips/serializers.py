@@ -73,6 +73,15 @@ class VehicleSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+        def validate_consumption_km_per_liter(
+            self,
+            value,
+        ):
+            if value <= 0:
+
+                raise serializers.ValidationError("O consumo deve ser maior que zero.")
+            return value
+
 
 class TollSerializer(serializers.ModelSerializer):
     class Meta:
