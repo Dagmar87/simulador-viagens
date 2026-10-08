@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import TripSimulation
 from .models import Vehicle
+from .models import Toll
 
 
 class TripSimulationSerializer(serializers.ModelSerializer):
@@ -70,4 +71,20 @@ class VehicleSerializer(serializers.ModelSerializer):
             "active",
             "created_at",
             "updated_at",
+        ]
+
+
+class TollSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model = Toll
+
+        fields = [
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "price",
+            "active",
+            "created_at",
         ]
