@@ -2,6 +2,8 @@ import requests
 
 from django.conf import settings
 
+from decimal import Decimal
+
 
 class GeocodingService:
 
@@ -95,51 +97,43 @@ class TripCalculator:
 
     @staticmethod
     def calculate(
-        distance_km: float,
-        consumption_km_per_liter: float,
-        fuel_price: float,
-        average_speed_kmh: float,
-        toll_cost: float = 0,
-        round_trip: bool = False,
-    ) -> dict:
+        distance_km,
+        consumption_km_per_liter,
+        fuel_price,
+        average_speed_kmh,
+        toll_cost=Decimal("0"),
+        round_trip=False,
+    ):
 
-        multiplier = 2 if round_trip else 1
+        distance_km = Decimal(str(distance_km))
+
+        consumption = Decimal(str(consumption_km_per_liter))
+
+        fuel_price = Decimal(str(fuel_price))
+
+        average_speed = Decimal(str(average_speed_kmh))
+
+        toll_cost = Decimal(str(toll_cost))
+
+        multiplier = Decimal("2") if round_trip else Decimal("1")
 
         total_distance = distance_km * multiplier
 
-        fuel_liters = total_distance / consumption_km_per_liter
+        fuel_liters = total_distance / consumption
 
         fuel_cost = fuel_liters * fuel_price
 
-        duration_hours = total_distance / average_speed_kmh
+        duration_minutes = total_distance / average_speed * Decimal("60")
 
-        duration_minutes = duration_hours * 60
+        total_toll = toll_cost * multiplier
 
-        total_cost = fuel_cost + (toll_cost * multiplier)
+        total_cost = fuel_cost + total_toll
 
         return {
-            "distance_km": round(
-                total_distance,
-                2,
-            ),
-            "fuel_liters": round(
-                fuel_liters,
-                2,
-            ),
-            "fuel_cost": round(
-                fuel_cost,
-                2,
-            ),
-            "duration_minutes": round(
-                duration_minutes,
-                2,
-            ),
-            "toll_cost": round(
-                toll_cost * multiplier,
-                2,
-            ),
-            "total_cost": round(
-                total_cost,
-                2,
-            ),
+            "distance_km": total_distance.quantize(Decimal("0.01")),
+            "fuel_liters": fuel_liters.quantize(Decimal("0.01")),
+            "fuel_cost": fuel_cost.quantize(Decimal("0.01")),
+            "duration_minutes": duration_minutes.quantize(Decimal("0.01")),
+            "toll_cost": total_toll.quantize(Decimal("0.01")),
+            "total_cost": total_cost.quantize(Decimal("0.01")),
         }
