@@ -1,11 +1,8 @@
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 
-from .models import TripSimulation, Vehicle
-from .serializers import (
-    TripSimulationSerializer,
-    VehicleSerializer,
-)
+from .models import TripSimulation, Vehicle, Toll
+from .serializers import TripSimulationSerializer, VehicleSerializer, TollSerializer
 from .services import GeocodingService, RoutingService, TripCalculator
 
 
@@ -150,3 +147,9 @@ class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
 
     serializer_class = VehicleSerializer
+
+
+class TollViewSet(viewsets.ModelViewSet):
+    queryset = Toll.objects.all()
+
+    serializer_class = TollSerializer
