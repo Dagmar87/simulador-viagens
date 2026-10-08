@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import TripSimulation
+from .models import Vehicle
 
 
 class TripSimulationSerializer(serializers.ModelSerializer):
@@ -54,3 +55,19 @@ class TripSimulationSerializer(serializers.ModelSerializer):
                 )
 
             return value
+
+
+class VehicleSerializer(serializers.ModelSerializer):
+    class Meta:
+
+        model = Vehicle
+
+        fields = [
+            "id",
+            "name",
+            "fuel_type",
+            "consumption_km_per_liter",
+            "active",
+            "created_at",
+            "updated_at",
+        ]
