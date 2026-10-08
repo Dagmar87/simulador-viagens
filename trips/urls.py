@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     TripSimulationViewSet,
     VehicleViewSet,
+    TollViewSet
 )
 
 router = DefaultRouter()
@@ -18,6 +19,12 @@ router.register(
     "vehicles",
     VehicleViewSet,
     basename="vehicle",
+)
+
+router.register(
+    "tolls",
+    TollViewSet,
+    basename="toll",
 )
 
 urlpatterns = [
